@@ -137,3 +137,25 @@ func TestCheckPointInSphere(t *testing.T) {
 		}
 	}
 }
+func TestCheckSphereVsSphere(t *testing.T) {
+	testData := []struct {
+		s1       Sphere
+		s2       Sphere
+		collided bool
+	}{
+		{Sphere{[3]float32{0, 0, 0}, 1}, Sphere{[3]float32{0, 0, 0}, 1}, true},
+		{Sphere{[3]float32{0, 0, 0}, 1}, Sphere{[3]float32{0, 0, 0}, 0.5}, true},
+		{Sphere{[3]float32{0, 0, 0}, 1}, Sphere{[3]float32{2, 2, 2}, 1}, false},
+		{Sphere{[3]float32{0, 0, 0}, 1}, Sphere{[3]float32{1, 1, 1}, 1}, true},
+		{Sphere{[3]float32{0, 0, 0}, 1}, Sphere{[3]float32{1, 1, 1}, 0.5}, false},
+		{Sphere{[3]float32{0, 0, 0}, 1}, Sphere{[3]float32{1, 1, 1}, 0.8}, true},
+	}
+
+	for _, tt := range testData {
+		result := CheckSphereVsSphere(tt.s1, tt.s2)
+		if result != tt.collided {
+			t.Error("Invalid collision result.")
+			t.Log(tt)
+		}
+	}
+}

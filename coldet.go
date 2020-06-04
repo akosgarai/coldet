@@ -100,9 +100,17 @@ func CheckPointInAabb(p Point, b AABB) bool {
 }
 
 // CheckPointInSphere returns true if the given point is inside the Sphere.
-// Instead of the distance, the distance square is compared to the radius suare.
+// Instead of the distance, the distance square is compared to the radius square.
 func CheckPointInSphere(p Point, s Sphere) bool {
 	distanceSquare := (p.X()-s.X())*(p.X()-s.X()) + (p.Y()-s.Y())*(p.Y()-s.Y()) + (p.Z()-s.Z())*(p.Z()-s.Z())
 
 	return distanceSquare < s.Radius()*s.Radius()
+}
+
+// CheckSphereVsSphere returns true if the given spheres intersect.
+// Instead of the distance, the distance square is compared to the sum of radius square.
+func CheckSphereVsSphere(s1, s2 Sphere) bool {
+	distanceSquare := (s1.X()-s2.X())*(s1.X()-s2.X()) + (s1.Y()-s2.Y())*(s1.Y()-s2.Y()) + (s1.Z()-s2.Z())*(s1.Z()-s2.Z())
+
+	return distanceSquare < (s1.Radius()+s2.Radius())*(s1.Radius()+s2.Radius())
 }
