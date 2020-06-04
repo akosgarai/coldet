@@ -10,6 +10,36 @@ var (
 	sphere = Sphere{[3]float32{1, 2, 3}, 1}
 )
 
+func TestNewBoundingPoint(t *testing.T) {
+	bp := NewBoundingPoint(p.position)
+	if bp.position != p.position {
+		t.Error("Invalid position")
+	}
+}
+func TestNewBoundingSphere(t *testing.T) {
+	bs := NewBoundingSphere(sphere.position, sphere.radius)
+	if bs.position != sphere.position {
+		t.Error("Invalid position")
+	}
+	if bs.radius != sphere.radius {
+		t.Error("Invalid radius")
+	}
+}
+func TestNewBoundingBox(t *testing.T) {
+	bb := NewBoundingBox(aabb.position, aabb.width, aabb.height, aabb.length)
+	if bb.position != aabb.position {
+		t.Error("Invalid position")
+	}
+	if bb.width != aabb.width {
+		t.Error("Invalid width")
+	}
+	if bb.length != aabb.length {
+		t.Error("Invalid length")
+	}
+	if bb.height != aabb.height {
+		t.Error("Invalid height")
+	}
+}
 func TestSphereX(t *testing.T) {
 	if sphere.X() != 1 {
 		t.Error("Invalid x coordinate.")

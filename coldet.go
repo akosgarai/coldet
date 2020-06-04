@@ -20,6 +20,16 @@ type Sphere struct {
 	radius   float32
 }
 
+func NewBoundingPoint(pos [3]float32) *Point {
+	return &Point{pos}
+}
+func NewBoundingSphere(pos [3]float32, radius float32) *Sphere {
+	return &Sphere{pos, radius}
+}
+func NewBoundingBox(pos [3]float32, width, height, length float32) *AABB {
+	return &AABB{pos, width, length, height}
+}
+
 // X returns the x component of the position.
 func (s *Sphere) X() float32 {
 	return s.position[0]
