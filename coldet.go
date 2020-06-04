@@ -11,6 +11,30 @@ type AABB struct {
 type Point struct {
 	position [3]float32
 }
+type Sphere struct {
+	position [3]float32
+	radius   float32
+}
+
+// X returns the x component of the position.
+func (s *Sphere) X() float32 {
+	return s.position[0]
+}
+
+// Y returns the y component of the position.
+func (s *Sphere) Y() float32 {
+	return s.position[1]
+}
+
+// Z returns the z component of the position.
+func (s *Sphere) Z() float32 {
+	return s.position[2]
+}
+
+// Radius returns the radius of the Sphere.
+func (s *Sphere) Radius() float32 {
+	return s.radius
+}
 
 // X returns the x component of the position.
 func (p *Point) X() float32 {
@@ -67,10 +91,18 @@ func CheckAabbVsAabb(b1, b2 AABB) bool {
 }
 
 // CheckPointVsAabb returns true if the given point is inside the AABB.
-func CheckPointVsAabb(p Point, b AABB) bool {
+func CheckPointInAabb(p Point, b AABB) bool {
 	inX := p.X() > b.X()-b.Width()/2 && p.X() < b.Width()/2
 	inY := p.Y() > b.Y()-b.Height()/2 && p.Z() < b.Height()/2
 	inZ := p.Z() > b.Z()-b.Length()/2 && p.Z() < b.Length()/2
 
 	return inX && inY && inZ
+}
+
+// CheckPointInSphere returns true if the given point is inside the Sphere.
+// Instead of the distance, the distance square is compared to the radius suare.
+func CheckPointInSphere(p Point, s Sphere) bool {
+	distanceSquare := (p.X()-s.X())*(p.X()-s.X()) + (p.Y()-s.Y())*(p.Y()-s.Y()) + (p.Z()-s.Z())*(p.Z()-s.Z())
+
+	return distanceSquare < s.Radius()*s.Radius()
 }

@@ -5,10 +5,31 @@ import (
 )
 
 var (
-	aabb = AABB{[3]float32{1, 2, 3}, 4, 5, 6}
-	p    = Point{[3]float32{1, 2, 3}}
+	aabb   = AABB{[3]float32{1, 2, 3}, 4, 5, 6}
+	p      = Point{[3]float32{1, 2, 3}}
+	sphere = Sphere{[3]float32{1, 2, 3}, 1}
 )
 
+func TestSphereX(t *testing.T) {
+	if sphere.X() != 1 {
+		t.Error("Invalid x coordinate.")
+	}
+}
+func TestSphereY(t *testing.T) {
+	if sphere.Y() != 2 {
+		t.Error("Invalid y coordinate.")
+	}
+}
+func TestSphereZ(t *testing.T) {
+	if sphere.Z() != 3 {
+		t.Error("Invalid z coordinate.")
+	}
+}
+func TestSphereRadius(t *testing.T) {
+	if sphere.Radius() != 1 {
+		t.Error("Invalid radius.")
+	}
+}
 func TestPointX(t *testing.T) {
 	if p.X() != 1 {
 		t.Error("Invalid x coordinate.")
@@ -75,7 +96,7 @@ func TestCheckAabbVsAabb(t *testing.T) {
 		}
 	}
 }
-func TestCheckPointVsAabb(t *testing.T) {
+func TestCheckPointInAabb(t *testing.T) {
 	testData := []struct {
 		p  Point
 		b  AABB
@@ -89,9 +110,30 @@ func TestCheckPointVsAabb(t *testing.T) {
 		{Point{[3]float32{0.49, 0.49, 0.49}}, AABB{[3]float32{0, 0, 0}, 1, 1, 1}, true},
 	}
 	for _, tt := range testData {
-		result := CheckPointVsAabb(tt.p, tt.b)
+		result := CheckPointInAabb(tt.p, tt.b)
 		if result != tt.in {
 			t.Error("Invalid collision result.")
+		}
+	}
+}
+func TestCheckPointInSphere(t *testing.T) {
+	testData := []struct {
+		p  Point
+		s  Sphere
+		in bool
+	}{
+		{Point{[3]float32{0, 0, 0}}, Sphere{[3]float32{0, 0, 0}, 1}, true},
+		{Point{[3]float32{0, 0, 0}}, Sphere{[3]float32{1, 1, 1}, 1}, false},
+		{Point{[3]float32{0, 0, 0}}, Sphere{[3]float32{1, 1, 1}, 2}, true},
+		{Point{[3]float32{0.5, 0.5, 0.5}}, Sphere{[3]float32{0, 0, 0}, 1}, true},
+		{Point{[3]float32{0.49, 0.49, 0.5}}, Sphere{[3]float32{0, 0, 0}, 1}, true},
+		{Point{[3]float32{0.49, 0.49, 0.49}}, Sphere{[3]float32{0, 0, 0}, 1}, true},
+	}
+	for _, tt := range testData {
+		result := CheckPointInSphere(tt.p, tt.s)
+		if result != tt.in {
+			t.Error("Invalid collision result.")
+			t.Log(tt)
 		}
 	}
 }
