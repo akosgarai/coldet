@@ -22,7 +22,7 @@ It is a structure that holds only a position (x, y, z coordinates).
 
 ## What is an AABB
 
-Axis aligned bounding box. It holds its center position, and the lenght of the sides of the box (x, y, z cooordinates, width, length, height).
+Axis aligned bounding box. It holds its center position, and the lenght of the sides of the box (x, y, z coordinates, width, length, height).
 
 ## What is a Sphere
 
