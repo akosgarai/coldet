@@ -159,3 +159,24 @@ func TestCheckSphereVsSphere(t *testing.T) {
 		}
 	}
 }
+func TestCheckSphereVsAabb(t *testing.T) {
+	testData := []struct {
+		s        Sphere
+		b        AABB
+		collided bool
+	}{
+		{Sphere{[3]float32{0, 0, 0}, 1}, AABB{[3]float32{2, 2, 2}, 1, 1, 1}, false},
+		{Sphere{[3]float32{0, 0, 0}, 1}, AABB{[3]float32{0, 0, 0}, 1, 1, 1}, true},
+		{Sphere{[3]float32{0, 0, 0}, 1}, AABB{[3]float32{0, 0, 0}, 0.5, 0.5, 0.5}, true},
+		{Sphere{[3]float32{0, 0, 0}, 1}, AABB{[3]float32{1, 1, 1}, 1, 1, 1}, true},
+		{Sphere{[3]float32{0, 0, 0}, 1}, AABB{[3]float32{1, 1, 1}, 0.5, 0.5, 0.5}, false},
+	}
+
+	for _, tt := range testData {
+		result := CheckSphereVsAabb(tt.s, tt.b)
+		if result != tt.collided {
+			t.Error("Invalid collision result.")
+			t.Log(tt)
+		}
+	}
+}

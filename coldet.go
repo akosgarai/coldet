@@ -1,5 +1,9 @@
 package coldet
 
+import (
+	"math"
+)
+
 // Axis aligned bounding box
 type AABB struct {
 	position [3]float32
@@ -113,4 +117,20 @@ func CheckSphereVsSphere(s1, s2 Sphere) bool {
 	distanceSquare := (s1.X()-s2.X())*(s1.X()-s2.X()) + (s1.Y()-s2.Y())*(s1.Y()-s2.Y()) + (s1.Z()-s2.Z())*(s1.Z()-s2.Z())
 
 	return distanceSquare < (s1.Radius()+s2.Radius())*(s1.Radius()+s2.Radius())
+}
+
+// CheckSphereVsAabb returns true if the given sphere intersects with the given bb.
+func CheckSphereVsAabb(s Sphere, b AABB) bool {
+	// Get the closest point to the sphere center
+	cX := clamp(s.X(), b.X()-b.Width()/2, b.X()+b.Width()/2)
+	cY := clamp(s.Y(), b.Y()-b.Height()/2, b.Y()+b.Height()/2)
+	cZ := clamp(s.Z(), b.Z()-b.Length()/2, b.Z()+b.Length()/2)
+
+	distanceSquare := (cX-s.X())*(cX-s.X()) + (cY-s.Y())*(cY-s.Y()) + (cZ-s.Z())*(cZ-s.Z())
+
+	return distanceSquare < s.Radius()*s.Radius()
+}
+
+func clamp(value, min, max float32) float32 {
+	return float32(math.Max(float64(min), math.Min(float64(value), float64(max))))
 }
