@@ -51,6 +51,8 @@ func (s *Sphere) Z() float32 {
 func (s *Sphere) Radius() float32 {
 	return s.radius
 }
+
+// Distance returns the distance from the given point.
 func (s *Sphere) Distance(to [3]float32) float32 {
 	pointPos := mgl32.Vec3{s.position[0], s.position[1], s.position[2]}
 	toPos := mgl32.Vec3{to[0], to[1], to[2]}
@@ -71,6 +73,8 @@ func (p *Point) Y() float32 {
 func (p *Point) Z() float32 {
 	return p.position[2]
 }
+
+// Distance returns the distance from the given point.
 func (p *Point) Distance(to [3]float32) float32 {
 	pointPos := mgl32.Vec3{p.position[0], p.position[1], p.position[2]}
 	toPos := mgl32.Vec3{to[0], to[1], to[2]}
@@ -106,6 +110,8 @@ func (a *AABB) Length() float32 {
 func (a *AABB) Height() float32 {
 	return a.height
 }
+
+// Distance returns the distance from the given point.
 func (a *AABB) Distance(to [3]float32) float32 {
 	toPos := mgl32.Vec3{to[0], to[1], to[2]}
 	// Get the closest point to the
