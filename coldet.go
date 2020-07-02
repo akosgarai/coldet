@@ -2,6 +2,8 @@ package coldet
 
 import (
 	"math"
+
+	"github.com/go-gl/mathgl/mgl32"
 )
 
 // Axis aligned bounding box
@@ -50,6 +52,24 @@ func (s *Sphere) Radius() float32 {
 	return s.radius
 }
 
+// Distance returns the distance from the given point.
+func (s *Sphere) Distance(to [3]float32) float32 {
+	pointPos := mgl32.Vec3{s.position[0], s.position[1], s.position[2]}
+	toPos := mgl32.Vec3{to[0], to[1], to[2]}
+	return pointPos.Sub(toPos).Len() - s.radius
+}
+
+// ClosestPoint returns the closest point on the surface to the given point.
+func (s *Sphere) ClosestPoint(to [3]float32) [3]float32 {
+	pointPos := mgl32.Vec3{s.position[0], s.position[1], s.position[2]}
+	toPos := mgl32.Vec3{to[0], to[1], to[2]}
+	distanceVector := toPos.Sub(pointPos)
+	distanceNormal := distanceVector.Normalize()
+	distanceToSurface := distanceNormal.Mul(s.radius)
+	surfacePoint := pointPos.Add(distanceToSurface)
+	return [3]float32{surfacePoint.X(), surfacePoint.Y(), surfacePoint.Z()}
+}
+
 // X returns the x component of the position.
 func (p *Point) X() float32 {
 	return p.position[0]
@@ -63,6 +83,18 @@ func (p *Point) Y() float32 {
 // Z returns the z component of the position.
 func (p *Point) Z() float32 {
 	return p.position[2]
+}
+
+// Distance returns the distance from the given point.
+func (p *Point) Distance(to [3]float32) float32 {
+	pointPos := mgl32.Vec3{p.position[0], p.position[1], p.position[2]}
+	toPos := mgl32.Vec3{to[0], to[1], to[2]}
+	return pointPos.Sub(toPos).Len()
+}
+
+// ClosestPoint returns position of the point.
+func (p *Point) ClosestPoint(to [3]float32) [3]float32 {
+	return p.position
 }
 
 // X returns the x component of the position.
@@ -93,6 +125,24 @@ func (a *AABB) Length() float32 {
 // Height returns the height of the bb.
 func (a *AABB) Height() float32 {
 	return a.height
+}
+
+// Distance returns the distance from the given point.
+func (a *AABB) Distance(to [3]float32) float32 {
+	toPos := mgl32.Vec3{to[0], to[1], to[2]}
+	closest := a.ClosestPoint(to)
+	closestPos := mgl32.Vec3{closest[0], closest[1], closest[2]}
+	return closestPos.Sub(toPos).Len()
+}
+
+// ClosestPoint returns position of the point.
+func (a *AABB) ClosestPoint(to [3]float32) [3]float32 {
+	toPos := mgl32.Vec3{to[0], to[1], to[2]}
+	// Get the closest point to the
+	cX := clamp(toPos.X(), a.X()-a.Width()/2, a.X()+a.Width()/2)
+	cY := clamp(toPos.Y(), a.Y()-a.Height()/2, a.Y()+a.Height()/2)
+	cZ := clamp(toPos.Z(), a.Z()-a.Length()/2, a.Z()+a.Length()/2)
+	return mgl32.Vec3{cX, cY, cZ}
 }
 
 // CheckAabbVsAabb returns true if the given two object has been collided.

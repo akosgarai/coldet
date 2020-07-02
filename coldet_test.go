@@ -60,6 +60,28 @@ func TestSphereRadius(t *testing.T) {
 		t.Error("Invalid radius.")
 	}
 }
+func TestSphereClosest(t *testing.T) {
+	point := [3]float32{2, 2, 3}
+	closest := sphere.ClosestPoint(point)
+	if closest != point {
+		t.Errorf("Invalid closest point. Instead of '%v', we have '%v'.", point, closest)
+	}
+	pointNew := [3]float32{4, 2, 3}
+	closest = sphere.ClosestPoint(pointNew)
+	if closest != point {
+		t.Errorf("Invalid closest point. Instead of '%v', we have '%v'.", point, closest)
+	}
+}
+func TestSphereDistance(t *testing.T) {
+	distance := sphere.Distance([3]float32{2, 2, 3})
+	if distance != 0.0 {
+		t.Errorf("Invalid distance. Instead of '0.0', we have '%f'.", distance)
+	}
+	distance = sphere.Distance([3]float32{4, 2, 3})
+	if distance != 2.0 {
+		t.Errorf("Invalid distance. Instead of '2.0', we have '%f'.", distance)
+	}
+}
 func TestPointX(t *testing.T) {
 	if p.X() != 1 {
 		t.Error("Invalid x coordinate.")
@@ -73,6 +95,27 @@ func TestPointY(t *testing.T) {
 func TestPointZ(t *testing.T) {
 	if p.Z() != 3 {
 		t.Error("Invalid z coordinate.")
+	}
+}
+func TestPointClosest(t *testing.T) {
+	testData := [][3]float32{
+		[3]float32{0, 0, 0},
+		[3]float32{1, 1, 1},
+		[3]float32{1, 0, 0},
+		[3]float32{1, 0, 1},
+	}
+	for _, tt := range testData {
+		closest := p.ClosestPoint(tt)
+		if closest != p.position {
+			t.Errorf("Invalid closest point. Instead of '%v, we have '%v'", p.position, closest)
+		}
+
+	}
+}
+func TestPointDistance(t *testing.T) {
+	distance := p.Distance([3]float32{p.X(), p.Y(), p.Z()})
+	if distance != 0.0 {
+		t.Errorf("Invalid distance. Instead of '0.0', we have '%f'.", distance)
 	}
 }
 func TestAABBX(t *testing.T) {
@@ -103,6 +146,28 @@ func TestAABBLength(t *testing.T) {
 func TestAABBHeight(t *testing.T) {
 	if aabb.Height() != 6 {
 		t.Error("Invalid heigth.")
+	}
+}
+func TestAABBClosest(t *testing.T) {
+	point := [3]float32{3, 2, 3}
+	closest := aabb.ClosestPoint(point)
+	if closest != point {
+		t.Errorf("Invalid closest point. Instead of '%v', we have '%v'.", point, closest)
+	}
+	otherPoint := [3]float32{4, 2, 3}
+	closest = aabb.ClosestPoint(otherPoint)
+	if closest != point {
+		t.Errorf("Invalid closest point. Instead of '%v', we have '%v'.", point, closest)
+	}
+}
+func TestAABBDistance(t *testing.T) {
+	distance := aabb.Distance([3]float32{3, 2, 3})
+	if distance != 0.0 {
+		t.Errorf("Invalid distance. Instead of '0.0', we have '%f'.", distance)
+	}
+	distance = aabb.Distance([3]float32{4, 2, 3})
+	if distance != 1.0 {
+		t.Errorf("Invalid distance. Instead of '1.0', we have '%f'.", distance)
 	}
 }
 
