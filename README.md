@@ -15,6 +15,7 @@ Collision detection library written in golang.
 - Point - AABB
 - AABB - Sphere
 - Sphere - Sphere
+- Distance - It returns the distance of a given vector and the bo.
 
 ## What is a Point?
 

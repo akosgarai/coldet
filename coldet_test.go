@@ -60,6 +60,16 @@ func TestSphereRadius(t *testing.T) {
 		t.Error("Invalid radius.")
 	}
 }
+func TestSphereDistance(t *testing.T) {
+	distance := sphere.Distance([3]float32{2, 2, 3})
+	if distance != 0.0 {
+		t.Errorf("Invalid distance. Instead of '0.0', we have '%f'.", distance)
+	}
+	distance = sphere.Distance([3]float32{4, 2, 3})
+	if distance != 2.0 {
+		t.Errorf("Invalid distance. Instead of '2.0', we have '%f'.", distance)
+	}
+}
 func TestPointX(t *testing.T) {
 	if p.X() != 1 {
 		t.Error("Invalid x coordinate.")
@@ -73,6 +83,12 @@ func TestPointY(t *testing.T) {
 func TestPointZ(t *testing.T) {
 	if p.Z() != 3 {
 		t.Error("Invalid z coordinate.")
+	}
+}
+func TestPointDistance(t *testing.T) {
+	distance := p.Distance([3]float32{p.X(), p.Y(), p.Z()})
+	if distance != 0.0 {
+		t.Errorf("Invalid distance. Instead of '0.0', we have '%f'.", distance)
 	}
 }
 func TestAABBX(t *testing.T) {
@@ -103,6 +119,16 @@ func TestAABBLength(t *testing.T) {
 func TestAABBHeight(t *testing.T) {
 	if aabb.Height() != 6 {
 		t.Error("Invalid heigth.")
+	}
+}
+func TestAABBDistance(t *testing.T) {
+	distance := aabb.Distance([3]float32{3, 2, 3})
+	if distance != 0.0 {
+		t.Errorf("Invalid distance. Instead of '0.0', we have '%f'.", distance)
+	}
+	distance = aabb.Distance([3]float32{4, 2, 3})
+	if distance != 1.0 {
+		t.Errorf("Invalid distance. Instead of '1.0', we have '%f'.", distance)
 	}
 }
 
