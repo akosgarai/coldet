@@ -16,6 +16,7 @@ Collision detection library written in golang.
 - AABB - Sphere
 - Sphere - Sphere
 - Distance - It returns the distance of a given vector and the bo.
+- ClosestPoint - It returns the closest point of the bo to the given vector.
 
 ## What is a Point?
 
